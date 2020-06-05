@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg ref="utf8Charset" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<bean id="utf8Charset" class="java.nio.charset.Charset"
+		factory-method="forName">
+		<constructor-arg value="UTF-8" />
+	</bean>
+	<mvc:default-servlet-handler />
+	<context:component-scan base-package="com.es.es_im.controller" />
+	<!-- 静态资源访问 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		<!-- 20M -->
+		<property name="maxUploadSize" value="20971520"></property>
+		<property name="maxInMemorySize" value="40960"></property>
+	</bean>
+	<!-- 拦截器配置 -->
+	<!-- <mvc:interceptors>
+	        <mvc:interceptor>
+	            <mvc:mapping path="/chat/toResetPassword"/>
+	            <mvc:mapping path="/chat/resetPassword"/>
+	            <bean class="com.es.chat.interceptors.TokenInterceptor"/>
+	        </mvc:interceptor>
+	       <mvc:interceptor> 
+	            <mvc:mapping path="/chat/index"/>
+	            <mvc:mapping path="/contact/**"/>
+	            <mvc:mapping path="/message/**"/>
+	            <bean class="com.es.chat.interceptors.AuthTokenInterceptor"/>
+	        </mvc:interceptor>
+	</mvc:interceptors> -->
+</beans>
